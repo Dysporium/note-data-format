@@ -12,12 +12,12 @@ Write data like notes, parse like lightning. A simple, compact, model-optimized 
 
 ## Installation
 ```bash
-pip install note-data-format
+pip install notedf
 ```
 
 ## Quick Start
 ```python
-from note-data-format import NoteDataFormat
+from notedf import NoteDataFormat
 
 parser = NoteDataFormat()
 

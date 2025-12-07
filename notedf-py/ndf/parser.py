@@ -36,6 +36,30 @@ class NoteDataFormat:
         lines = text.strip().split('\n')
         return self._parse_block(lines, 0)[0]
     
+    def load(self, filepath: str) -> Dict[str, Any]:
+        """
+        Load and parse NDF file
+        
+        Args:
+            filepath: Path to .notedf file
+            
+        Returns:
+            Parsed data as dictionary
+        """
+        with open(filepath, 'r', encoding='utf-8') as f:
+            return self.parse(f.read())
+    
+    def save(self, data: Dict[str, Any], filepath: str) -> None:
+        """
+        Save data to NDF file
+        
+        Args:
+            data: Dictionary to save
+            filepath: Path to .notedf file
+        """
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(self.dumps(data))
+    
     def dumps(self, data: Dict[str, Any], indent: int = 0) -> str:
         """
         Convert Python dict to NDF format

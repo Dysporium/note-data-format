@@ -1,0 +1,45 @@
+# Source files
+src/
+tsconfig.json
+jest.config.js
+.eslintrc.js
+
+# Tests
+**/__tests__/
+**/*.test.ts
+**/*.spec.ts
+coverage/
+
+# Development files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# CI/CD
+.github/
+.travis.yml
+.gitlab-ci.yml
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.*
+
+# Documentation source
+docs/
+
+# Examples
+examples/
+
+# Build cache
+*.tsbuildinfo
+.cache/

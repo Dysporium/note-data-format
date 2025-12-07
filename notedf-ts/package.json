@@ -1,0 +1,72 @@
+{
+    "name": "@dysporium/notedf",
+    "version": "0.1.0",
+    "description": "Note Data Format - Write data like notes in .notedf files",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "module": "dist/index.js",
+    "bin": {
+      "ndf": "dist/cli.js"
+    },
+    "publishConfig": {
+      "access": "public"
+    },
+    "files": [
+      "dist",
+      "README.md",
+      "LICENSE"
+    ],
+    "scripts": {
+      "build": "tsc && node -e \"const fs = require('fs'); const path = 'dist/cli.js'; if (fs.existsSync(path)) { fs.chmodSync(path, '755'); }\"",
+      "build:unix": "tsc && chmod +x dist/cli.js",
+      "test": "jest",
+      "test:watch": "jest --watch",
+      "test:coverage": "jest --coverage",
+      "lint": "eslint src --ext .ts",
+      "lint:fix": "eslint src --ext .ts --fix",
+      "prepublishOnly": "npm run build",
+      "clean": "node -e \"const fs = require('fs'); const path = require('path'); const dir = 'dist'; if (fs.existsSync(dir)) { fs.rmSync(dir, { recursive: true, force: true }); }\""
+    },
+    "keywords": [
+      "data-format",
+      "parser",
+      "serialization",
+      "notedf",
+      "ndf",
+      "config",
+      "configuration",
+      "data",
+      "lightweight",
+      "note",
+      "format",
+      "ai",
+      "ml",
+      "machine-learning",
+      "token-efficient",
+      "cli",
+      "command-line"
+    ],
+    "author": "Dysporium",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/dysporium/notedf.git"
+    },
+    "bugs": {
+      "url": "https://github.com/dysporium/notedf/issues"
+    },
+    "homepage": "https://github.com/dysporium/notedf#readme",
+    "devDependencies": {
+      "@types/jest": "^29.5.11",
+      "@types/node": "^20.10.6",
+      "@typescript-eslint/eslint-plugin": "^6.16.0",
+      "@typescript-eslint/parser": "^6.16.0",
+      "eslint": "^8.56.0",
+      "jest": "^29.7.0",
+      "ts-jest": "^29.1.1",
+      "typescript": "^5.3.3"
+    },
+    "engines": {
+      "node": ">=14.0.0"
+    }
+  }

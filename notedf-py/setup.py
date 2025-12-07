@@ -4,8 +4,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="note-data-format",
-    version="0.1.0",
+    name="notedf",
+    version="0.2.0",
     author="Paul Mothapo",
     author_email="paulmothapo.business@gmail.com",
     description="Note Data Format - Simple, compact, model-optimized data format",
