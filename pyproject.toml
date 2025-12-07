@@ -3,7 +3,7 @@ requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ndf"
+name = "note-data-format"
 version = "0.1.0"
 description = "Note Data Format - Simple, compact, model-optimized data format"
 readme = "README.md"
