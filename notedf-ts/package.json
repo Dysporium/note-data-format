@@ -1,6 +1,6 @@
 {
     "name": "@dysporium/notedf",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Note Data Format - Write data like notes in .notedf files",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -50,12 +50,12 @@
     "license": "MIT",
     "repository": {
       "type": "git",
-      "url": "https://github.com/dysporium/notedf.git"
+      "url": "https://github.com/Dysporium/note-data-format.git"
     },
     "bugs": {
-      "url": "https://github.com/dysporium/notedf/issues"
+      "url": "https://github.com/Dysporium/note-data-format/issues"
     },
-    "homepage": "https://github.com/dysporium/notedf#readme",
+    "homepage": "https://github.com/Dysporium/note-data-format#readme",
     "devDependencies": {
       "@types/jest": "^29.5.11",
       "@types/node": "^20.10.6",

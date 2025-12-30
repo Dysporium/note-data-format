@@ -1,8 +1,3 @@
-#!/usr/bin/env node
-/**
- * NDF CLI Tool
- * Use .notedf files directly from command line
- */
 
 import { NoteDataFormat } from './index';
 import * as fs from 'fs';
