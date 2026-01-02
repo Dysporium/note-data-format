@@ -1,0 +1,65 @@
+# Example Note Data Format Configuration File
+# This demonstrates various NDF syntax features
+
+# Simple key-value pairs
+name: Alice
+age: 30
+active: yes
+score: 95.5
+
+# Lists (space or comma separated)
+tags: python ai machine-learning
+colors: red, blue, green
+numbers: 1 2 3 4 5
+
+# Nested objects
+user:
+  name: Bob
+  email: bob@example.com
+  settings:
+    theme: dark
+    notifications: yes
+    language: en
+
+# Arrays
+favorites: [coffee, books, coding]
+coordinates: [10.5, 20.3, 30.1]
+
+# Inline objects
+metadata: {author: "John Doe", version: "1.0", license: "MIT"}
+
+# Multi-line text
+description: |
+  This is a multi-line description.
+  It preserves line breaks and formatting.
+  Perfect for longer text content.
+
+# References
+$base_url: https://api.example.com
+$timeout: 30
+
+api:
+  endpoint: $base_url/v1/users
+  timeout: $timeout
+  retries: 3
+
+# Type hints
+timestamp: @time 2024-01-15T10:30:00Z
+embedding: @embedding 0.1,0.2,0.3,0.4,0.5
+vector: @f[128] 0.1,0.2,0.3,0.4,0.5
+
+# Null values
+optional_field: null
+empty_value: none
+placeholder: -
+
+# Boolean variations
+enabled: yes
+disabled: no
+active: true
+inactive: false
+
+# Comments can be inline too
+api_key: secret123  # This is a comment
+debug_mode: yes  # Enable for development
+

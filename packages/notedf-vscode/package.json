@@ -1,0 +1,108 @@
+{
+  "name": "notedf-vscode",
+  "displayName": "Note Data Format (NDF)",
+  "description": "Syntax highlighting and language support for Note Data Format (.notedf) files",
+  "version": "1.1.0",
+  "publisher": "dysporium",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "ndf",
+    "notedf",
+    "note-data-format",
+    "syntax",
+    "highlighting"
+  ],
+  "activationEvents": [
+    "onLanguage:notedf"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "notedf",
+        "aliases": [
+          "NDF",
+          "Note Data Format"
+        ],
+        "extensions": [
+          ".notedf",
+          ".ndf"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "notedf",
+        "scopeName": "source.notedf",
+        "path": "./syntaxes/notedf.tmLanguage.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "notedf.format",
+        "title": "Format Document",
+        "category": "NDF"
+      },
+      {
+        "command": "notedf.validate",
+        "title": "Validate NDF",
+        "category": "NDF"
+      },
+      {
+        "command": "notedf.toJson",
+        "title": "Convert to JSON",
+        "category": "NDF"
+      }
+    ],
+    "configuration": {
+      "title": "NDF",
+      "properties": {
+        "notedf.validate.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable NDF validation diagnostics"
+        },
+        "notedf.format.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable NDF document formatting"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "webpack --mode production",
+    "watch": "webpack --mode development --watch",
+    "package": "npx @vscode/vsce package",
+    "version:patch": "node scripts/version.js patch",
+    "version:minor": "node scripts/version.js minor",
+    "version:major": "node scripts/version.js major",
+    "release": "npm run version:patch && npm run package"
+  },
+  "devDependencies": {
+    "@dysporium/notedf": "file:../../notedf-ts",
+    "@types/node": "^20.10.6",
+    "@types/vscode": "^1.74.0",
+    "typescript": "^5.3.3",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "ts-loader": "^9.5.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dysporium/note-data-format.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Dysporium/note-data-format/issues"
+  },
+  "homepage": "https://github.com/Dysporium/note-data-format#readme",
+  "license": "MIT",
+  "icon": "logo.png"
+}

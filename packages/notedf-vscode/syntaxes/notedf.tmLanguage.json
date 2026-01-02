@@ -1,0 +1,170 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Note Data Format",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#references"
+    },
+    {
+      "include": "#keys"
+    },
+    {
+      "include": "#values"
+    },
+    {
+      "include": "#multiline"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.number-sign.notedf",
+          "match": "#.*$"
+        }
+      ]
+    },
+    "references": {
+      "patterns": [
+        {
+          "name": "variable.other.reference.notedf",
+          "match": "^\\s*(\\$[a-zA-Z_][a-zA-Z0-9_]*)\\s*:",
+          "captures": {
+            "1": {
+              "name": "entity.name.variable.reference.notedf"
+            }
+          }
+        },
+        {
+          "name": "variable.other.reference-value.notedf",
+          "match": "\\$[a-zA-Z_][a-zA-Z0-9_]*(?:\\s*\\{[^}]+\\})?",
+          "captures": {
+            "0": {
+              "name": "entity.name.variable.reference.notedf"
+            }
+          }
+        }
+      ]
+    },
+    "keys": {
+      "patterns": [
+        {
+          "name": "entity.name.tag.notedf",
+          "match": "^\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s*:",
+          "captures": {
+            "1": {
+              "name": "entity.name.tag.notedf"
+            }
+          }
+        }
+      ]
+    },
+    "values": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.notedf",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.notedf",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.notedf",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.notedf",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "constant.language.boolean.notedf",
+          "match": "\\b(yes|no|true|false)\\b"
+        },
+        {
+          "name": "constant.language.null.notedf",
+          "match": "\\b(null|none|-)\\b"
+        },
+        {
+          "name": "constant.numeric.notedf",
+          "match": "\\b-?\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?\\b"
+        },
+        {
+          "name": "constant.other.type-hint.notedf",
+          "match": "@(?:time|embedding|f\\[\\d+\\])\\b"
+        },
+        {
+          "name": "meta.structure.array.notedf",
+          "begin": "\\[",
+          "end": "\\]",
+          "patterns": [
+            {
+              "include": "#values"
+            }
+          ]
+        },
+        {
+          "name": "meta.structure.object.inline.notedf",
+          "begin": "\\{",
+          "end": "\\}",
+          "patterns": [
+            {
+              "name": "entity.name.tag.notedf",
+              "match": "[a-zA-Z_][a-zA-Z0-9_]*"
+            },
+            {
+              "include": "#values"
+            }
+          ]
+        },
+        {
+          "name": "string.unquoted.notedf",
+          "match": "(?::\\s*)([^#\\n]+?)(?=\\s*#|\\s*$)",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#values"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "multiline": {
+      "patterns": [
+        {
+          "name": "string.multiline.notedf",
+          "begin": "^\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s*:\\s*\\|",
+          "end": "^(?!\\s{2,})",
+          "beginCaptures": {
+            "1": {
+              "name": "entity.name.tag.notedf"
+            },
+            "2": {
+              "name": "punctuation.definition.string.begin.notedf"
+            }
+          },
+          "patterns": [
+            {
+              "name": "string.content.notedf",
+              "match": ".+"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "scopeName": "source.notedf"
+}
+
