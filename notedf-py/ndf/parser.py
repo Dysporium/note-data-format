@@ -18,7 +18,7 @@ class NoteDataFormat:
     """Parser for Note Data Format (NDF)"""
     
     def __init__(self):
-        self.references = {}
+        pass
     
     # ============= PUBLIC API =============
     
@@ -32,7 +32,6 @@ class NoteDataFormat:
         Returns:
             Parsed data as dictionary
         """
-        self.references = {}  # Reset references for each parse
         lines = text.strip().split('\n')
         return self._parse_block(lines, 0)[0]
     
@@ -116,11 +115,6 @@ class NoteDataFormat:
             # Clean line
             line = self._remove_inline_comment(line).strip()
             
-            # Handle references
-            if line.startswith('$'):
-                i = self._handle_reference(line, i)
-                continue
-            
             # Parse key-value pair
             if ':' not in line:
                 i += 1
@@ -189,10 +183,6 @@ class NoteDataFormat:
         """Parse a value into appropriate Python type"""
         value = value.strip()
         
-        # Reference
-        if value.startswith('$'):
-            return self._resolve_reference(value)
-        
         # Inline object
         if value.startswith('{') and value.endswith('}'):
             return self._parse_inline_object(value)
@@ -200,10 +190,6 @@ class NoteDataFormat:
         # Array
         if value.startswith('[') and value.endswith(']'):
             return self._parse_array(value)
-        
-        # Type hints
-        if value.startswith('@'):
-            return self._parse_typed_value(value)
         
         # List (comma or space separated)
         if ',' in value or (' ' in value and not value.startswith('"')):
@@ -285,50 +271,6 @@ class NoteDataFormat:
         # Simple array
         items = [item.strip() for item in text.split(',') if item.strip()]
         return [self._parse_simple_value(item) for item in items]
-    
-    def _parse_typed_value(self, value: str) -> Any:
-        """Parse typed values with hints like @time, @f32[], etc."""
-        parts = value.split(maxsplit=1)
-        if len(parts) != 2:
-            return value
-        
-        type_hint, actual_value = parts
-        
-        if type_hint == '@time':
-            return {'_type': 'timestamp', 'value': actual_value}
-        elif type_hint.startswith('@f') and '[' in type_hint:
-            return [float(x.strip()) for x in actual_value.split(',')]
-        elif type_hint == '@embedding':
-            return {'_type': 'embedding', 'data': actual_value}
-        
-        return actual_value
-    
-    # ============= REFERENCE HANDLING =============
-    
-    def _handle_reference(self, line: str, i: int) -> int:
-        """Handle reference definition"""
-        key, value = line.split(':', 1)
-        self.references[key.strip()] = self._parse_value(value.strip())
-        return i + 1
-    
-    def _resolve_reference(self, value: str) -> Any:
-        """Resolve reference with optional inline override"""
-        ref_key = value.split()[0]
-        
-        if ref_key not in self.references:
-            return value
-        
-        base = self.references[ref_key]
-        if isinstance(base, dict):
-            base = base.copy()
-        
-        # Handle inline overrides: $ref {key: value}
-        if '{' in value:
-            override = self._parse_inline_object(value[value.index('{'):])
-            if isinstance(base, dict):
-                base.update(override)
-        
-        return base
     
     # ============= FORMATTING METHODS =============
     

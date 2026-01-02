@@ -80,7 +80,7 @@
     "vscode:prepublish": "npm run compile",
     "compile": "webpack --mode production",
     "watch": "webpack --mode development --watch",
-    "package": "npx @vscode/vsce package",
+    "package": "npx @vscode/vsce package -o builds/",
     "version:patch": "node scripts/version.js patch",
     "version:minor": "node scripts/version.js minor",
     "version:major": "node scripts/version.js major",

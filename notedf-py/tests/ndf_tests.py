@@ -188,35 +188,6 @@ age: 30
         assert result == {'name': 'Alice', 'age': 30}
 
 
-class TestReferences:
-    """Test reference/template functionality"""
-    
-    def test_basic_reference(self):
-        parser = NoteDataFormat()
-        ndf = """
-$template:
-  role: member
-
-user: $template
-"""
-        result = parser.parse(ndf)
-        assert 'user' in result
-        assert result['user'] == {'role': 'member'}
-    
-    def test_reference_with_override(self):
-        parser = NoteDataFormat()
-        ndf = """
-$template:
-  role: member
-  active: yes
-
-user: $template {name: Alice}
-"""
-        result = parser.parse(ndf)
-        expected = {'user': {'role': 'member', 'active': True, 'name': 'Alice'}}
-        assert result == expected
-
-
 class TestDumps:
     """Test serialization (dumps)"""
     
@@ -300,25 +271,6 @@ class TestEdgeCases:
         parser = NoteDataFormat()
         result = parser.parse("temp: -5.5")
         assert result == {'temp': -5.5}
-
-
-class TestTypedValues:
-    """Test type hints"""
-    
-    def test_time_type(self):
-        parser = NoteDataFormat()
-        result = parser.parse("created: @time 2024-12-07T10:30:00")
-        assert result == {'created': {'_type': 'timestamp', 'value': '2024-12-07T10:30:00'}}
-    
-    def test_float_array_type(self):
-        parser = NoteDataFormat()
-        result = parser.parse("vector: @f32[] 0.1, 0.2, 0.3")
-        assert result == {'vector': [0.1, 0.2, 0.3]}
-    
-    def test_embedding_type(self):
-        parser = NoteDataFormat()
-        result = parser.parse("embedding: @embedding abc123")
-        assert result == {'embedding': {'_type': 'embedding', 'data': 'abc123'}}
 
 
 if __name__ == '__main__':

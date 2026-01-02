@@ -1,10 +1,3 @@
-/**
- * NDF - Note Data Format Parser
- * TypeScript/JavaScript implementation
- * 
- * @packageDocumentation
- */
-
 export type NDFValue = string | number | boolean | null | NDFObject | NDFArray;
 export type NDFObject = { [key: string]: NDFValue };
 export type NDFArray = NDFValue[];
@@ -14,38 +7,9 @@ interface ParsedResult {
   index: number;
 }
 
-/**
- * Main parser class for Note Data Format
- * 
- * @example
- * ```typescript
- * import { NoteDataFormat } from 'notedf';
- * 
- * const parser = new NoteDataFormat();
- * const data = parser.parse('name: Alice\nage: 30');
- * console.log(data); // { name: 'Alice', age: 30 }
- * ```
- */
 export class NoteDataFormat {
-  private references: Map<string, NDFValue>;
+  constructor() {}
 
-  constructor() {
-    this.references = new Map();
-  }
-
-  // ============= PUBLIC API =============
-
-  /**
-   * Load and parse NDF file (Node.js only)
-   * 
-   * @param filepath - Path to .notedf file
-   * @returns Parsed data as object
-   * 
-   * @example
-   * ```typescript
-   * const data = await parser.loadFile('config.notedf');
-   * ```
-   */
   async loadFile(filepath: string): Promise<NDFObject> {
     if (typeof (globalThis as any).window !== 'undefined') {
       throw new Error('loadFile() is only available in Node.js environment');
@@ -55,37 +19,6 @@ export class NoteDataFormat {
     return this.parse(content);
   }
 
-  /**
-   * Load NDF file synchronously (Node.js only)
-   * 
-   * @param filepath - Path to .notedf file
-   * @returns Parsed data as object
-   * 
-   * @example
-   * ```typescript
-   * const data = parser.loadFileSync('config.notedf');
-   * ```
-   */
-  loadFileSync(filepath: string): NDFObject {
-    if (typeof (globalThis as any).window !== 'undefined') {
-      throw new Error('loadFileSync() is only available in Node.js environment');
-    }
-    const fs = require('fs');
-    const content = fs.readFileSync(filepath, 'utf-8');
-    return this.parse(content);
-  }
-
-  /**
-   * Save data to NDF file (Node.js only)
-   * 
-   * @param data - Object to save
-   * @param filepath - Path to .notedf file
-   * 
-   * @example
-   * ```typescript
-   * await parser.saveFile({ name: 'Alice' }, 'data.notedf');
-   * ```
-   */
   async saveFile(data: NDFObject, filepath: string): Promise<void> {
     if (typeof (globalThis as any).window !== 'undefined') {
       throw new Error('saveFile() is only available in Node.js environment');
@@ -95,57 +28,11 @@ export class NoteDataFormat {
     await fs.writeFile(filepath, content, 'utf-8');
   }
 
-  /**
-   * Save data to NDF file synchronously (Node.js only)
-   * 
-   * @param data - Object to save
-   * @param filepath - Path to .notedf file
-   * 
-   * @example
-   * ```typescript
-   * parser.saveFileSync({ name: 'Alice' }, 'data.notedf');
-   * ```
-   */
-  saveFileSync(data: NDFObject, filepath: string): void {
-    if (typeof (globalThis as any).window !== 'undefined') {
-      throw new Error('saveFileSync() is only available in Node.js environment');
-    }
-    const fs = require('fs');
-    const content = this.dumps(data);
-    fs.writeFileSync(filepath, content, 'utf-8');
-  }
-
-  /**
-   * Parse NDF text into JavaScript object
-   * 
-   * @param text - NDF formatted string
-   * @returns Parsed data as object
-   * 
-   * @example
-   * ```typescript
-   * const data = parser.parse('name: Alice\nage: 30');
-   * console.log(data); // { name: 'Alice', age: 30 }
-   * ```
-   */
   parse(text: string): NDFObject {
-    this.references.clear();
     const lines = text.trim().split('\n');
     return this.parseBlock(lines, 0).data;
   }
 
-  /**
-   * Convert JavaScript object to NDF format
-   * 
-   * @param data - Object to convert
-   * @param indent - Starting indentation level
-   * @returns NDF formatted string
-   * 
-   * @example
-   * ```typescript
-   * const ndf = parser.dumps({ name: 'Alice', age: 30 });
-   * console.log(ndf); // "name: Alice\nage: 30"
-   * ```
-   */
   dumps(data: NDFObject, indent: number = 0): string {
     const lines: string[] = [];
     const indentStr = '  '.repeat(indent);
@@ -174,61 +61,36 @@ export class NoteDataFormat {
 
     while (i < lines.length) {
       const line = lines[i];
-
-      // Skip empty lines and comments
       if (!line.trim() || line.trim().startsWith('#')) {
         i++;
         continue;
       }
-
       const indent = this.getIndent(line);
-
-      // Dedented - done with this block
       if (indent < startIndent) {
         break;
       }
-
-      // Skip lines not at our level
       if (indent > startIndent) {
         i++;
         continue;
       }
-
-      // Clean line
       const cleanLine = this.removeInlineComment(line).trim();
-
-      // Handle references
-      if (cleanLine.startsWith('$')) {
-        this.handleReference(cleanLine);
-        i++;
-        continue;
-      }
-
-      // Parse key-value pair
       if (!cleanLine.includes(':')) {
         i++;
         continue;
       }
-
       const [key, value] = this.splitKeyValue(cleanLine);
-
-      // Multi-line text
       if (value === '|') {
         const { text, newIndex } = this.parseMultiline(lines, i, indent);
         result[key] = text;
         i = newIndex;
         continue;
       }
-
-      // Nested object
       if (!value) {
         const { data: nestedData, newIndex } = this.parseNested(lines, i, indent);
         result[key] = nestedData;
         i = newIndex;
         continue;
       }
-
-      // Parse value
       result[key] = this.parseValue(value);
       i++;
     }
@@ -272,17 +134,14 @@ export class NoteDataFormat {
 
     while (nestedStart < lines.length) {
       const nextLine = lines[nestedStart];
-
       if (!nextLine.trim() || nextLine.trim().startsWith('#')) {
         nestedStart++;
         continue;
       }
-
       const nextIndent = this.getIndent(nextLine);
       if (nextIndent <= indent) {
         break;
       }
-
       nestedLines.push(nextLine);
       nestedStart++;
     }
@@ -296,66 +155,40 @@ export class NoteDataFormat {
 
   private parseValue(value: string): NDFValue {
     value = value.trim();
-
-    // Reference
-    if (value.startsWith('$')) {
-      return this.resolveReference(value);
-    }
-
-    // Inline object
     if (value.startsWith('{') && value.endsWith('}')) {
       return this.parseInlineObject(value);
     }
-
-    // Array
     if (value.startsWith('[') && value.endsWith(']')) {
       return this.parseArray(value);
     }
-
-    // Type hints
-    if (value.startsWith('@')) {
-      return this.parseTypedValue(value);
-    }
-
-    // List (comma or space separated)
     if (value.includes(',') || (value.includes(' ') && !value.startsWith('"'))) {
       const items = value.split(/[,\s]+/).filter(item => item.trim());
       return items.map(item => this.parseSimpleValue(item));
     }
-
     return this.parseSimpleValue(value);
   }
 
   private parseSimpleValue(value: string): string | number | boolean | null {
     value = value.trim();
-
-    // Remove quotes
     if ((value.startsWith('"') && value.endsWith('"')) ||
         (value.startsWith("'") && value.endsWith("'"))) {
       return value.slice(1, -1);
     }
-
-    // Boolean
     const lowerValue = value.toLowerCase();
     if (lowerValue === 'yes' || lowerValue === 'true') return true;
     if (lowerValue === 'no' || lowerValue === 'false') return false;
-
-    // Null
     if (lowerValue === 'null' || lowerValue === 'none' || lowerValue === '-') {
       return null;
     }
-
-    // Number
     const num = Number(value);
     if (!isNaN(num) && value !== '') {
       return num;
     }
-
     return value;
   }
 
   private parseInlineObject(text: string): NDFObject {
-    text = text.slice(1, -1).trim(); // Remove braces
+    text = text.slice(1, -1).trim();
     const result: NDFObject = {};
 
     const pairs = text.split(',');
@@ -369,9 +202,7 @@ export class NoteDataFormat {
   }
 
   private parseArray(text: string): NDFArray {
-    text = text.slice(1, -1).trim(); // Remove brackets
-
-    // Handle nested arrays
+    text = text.slice(1, -1).trim();
     if (text.includes('[')) {
       const result: NDFArray = [];
       let depth = 0;
@@ -400,58 +231,8 @@ export class NoteDataFormat {
 
       return result;
     }
-
-    // Simple array
     const items = text.split(',').map(s => s.trim()).filter(s => s);
     return items.map(item => this.parseSimpleValue(item));
-  }
-
-  private parseTypedValue(value: string): NDFValue {
-    const parts = value.split(/\s+/, 2);
-    if (parts.length !== 2) return value;
-
-    const [typeHint, actualValue] = parts;
-
-    if (typeHint === '@time') {
-      return { _type: 'timestamp', value: actualValue };
-    } else if (typeHint.startsWith('@f') && typeHint.includes('[')) {
-      return actualValue.split(',').map(x => parseFloat(x.trim()));
-    } else if (typeHint === '@embedding') {
-      return { _type: 'embedding', data: actualValue };
-    }
-
-    return actualValue;
-  }
-
-  // ============= REFERENCE HANDLING =============
-
-  private handleReference(line: string): void {
-    const colonIndex = line.indexOf(':');
-    if (colonIndex === -1) return;
-
-    const key = line.slice(0, colonIndex).trim();
-    const value = line.slice(colonIndex + 1).trim();
-    this.references.set(key, this.parseValue(value));
-  }
-
-  private resolveReference(value: string): NDFValue {
-    const refKey = value.split(/\s+/)[0];
-
-    if (!this.references.has(refKey)) {
-      return value;
-    }
-
-    let base = this.references.get(refKey)!;
-
-    // Handle inline overrides
-    if (value.includes('{') && this.isObject(base)) {
-      base = { ...(base as NDFObject) };
-      const overrideStart = value.indexOf('{');
-      const override = this.parseInlineObject(value.slice(overrideStart));
-      Object.assign(base, override);
-    }
-
-    return base;
   }
 
   // ============= FORMATTING METHODS =============
@@ -517,10 +298,4 @@ export class NoteDataFormat {
   }
 }
 
-// Export for CommonJS
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { NoteDataFormat };
-}
-
-// Default export
 export default NoteDataFormat;

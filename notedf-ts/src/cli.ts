@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 
 import { NoteDataFormat } from './index';
 import * as fs from 'fs';
@@ -17,14 +18,12 @@ Commands:
   from-json <file>      Convert .json to .notedf
   validate <file>       Validate .notedf syntax
   format <file>         Format/pretty-print .notedf file
-  cat <file>            Display .notedf file as JSON
   help                  Show this help
 
 Examples:
   ndf convert config.notedf
   ndf from-json data.json
   ndf validate settings.notedf
-  ndf cat claude.notedf
 
 Creating .notedf files:
   Just create a file with .notedf extension and write:
@@ -40,7 +39,8 @@ Creating .notedf files:
 
 function handleConvert(filepath: string) {
   try {
-    const data = parser.loadFileSync(filepath);
+    const content = fs.readFileSync(filepath, 'utf-8');
+    const data = parser.parse(content);
     console.log(JSON.stringify(data, null, 2));
   } catch (error) {
     console.error(`Error: ${(error as Error).message}`);
@@ -66,7 +66,8 @@ function handleFromJson(filepath: string) {
 
 function handleValidate(filepath: string) {
   try {
-    parser.loadFileSync(filepath);
+    const content = fs.readFileSync(filepath, 'utf-8');
+    parser.parse(content);
     console.log(`✓ ${filepath} is valid`);
   } catch (error) {
     console.error(`✗ Invalid syntax: ${(error as Error).message}`);
@@ -76,20 +77,11 @@ function handleValidate(filepath: string) {
 
 function handleFormat(filepath: string) {
   try {
-    const data = parser.loadFileSync(filepath);
+    const content = fs.readFileSync(filepath, 'utf-8');
+    const data = parser.parse(content);
     const formatted = parser.dumps(data);
     fs.writeFileSync(filepath, formatted, 'utf-8');
     console.log(`✓ Formatted ${filepath}`);
-  } catch (error) {
-    console.error(`Error: ${(error as Error).message}`);
-    process.exit(1);
-  }
-}
-
-function handleCat(filepath: string) {
-  try {
-    const data = parser.loadFileSync(filepath);
-    console.log(JSON.stringify(data, null, 2));
   } catch (error) {
     console.error(`Error: ${(error as Error).message}`);
     process.exit(1);
@@ -135,10 +127,6 @@ switch (command) {
   
   case 'format':
     handleFormat(filepath);
-    break;
-  
-  case 'cat':
-    handleCat(filepath);
     break;
   
   default:
