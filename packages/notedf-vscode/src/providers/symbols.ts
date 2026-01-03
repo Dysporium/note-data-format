@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { NoteDataFormat } from '@dysporium/notedf';
+import { NoteDataFormat } from 'notedf';
 import { findKeyRange } from '../utils/helpers';
 
 export function createSymbolProvider(parser: NoteDataFormat): vscode.DocumentSymbolProvider {

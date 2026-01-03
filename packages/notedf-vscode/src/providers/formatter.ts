@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { NoteDataFormat } from '@dysporium/notedf';
+import { NoteDataFormat } from 'notedf';
 
 export function createFormatterProvider(parser: NoteDataFormat): vscode.DocumentFormattingEditProvider {
   return {

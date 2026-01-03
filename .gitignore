@@ -4,6 +4,9 @@ package-lock.json
 yarn.lock
 pnpm-lock.yaml
 
+# Examples
+example/notedf-nestjs
+
 # Build output
 dist/
 build/

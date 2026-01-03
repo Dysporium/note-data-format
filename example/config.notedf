@@ -35,7 +35,7 @@ description: |
   Perfect for longer text content.
 
 # References
-$base_url: https://api.example.com
+$base_url: https://api.dysporium.com
 $timeout: 30
 
 api:

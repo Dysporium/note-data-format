@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { NoteDataFormat } from '@dysporium/notedf';
+import { NoteDataFormat } from 'notedf';
 import { DiagnosticsManager } from '../providers/diagnostics';
 
 export function registerCommands(
@@ -46,6 +46,26 @@ export function registerCommands(
     }
   });
 
-  context.subscriptions.push(formatCommand, validateCommand, toJsonCommand);
-}
+  const fromJsonCommand = vscode.commands.registerCommand('notedf.fromJson', async () => {
+    const editor = vscode.window.activeTextEditor;
+    if (editor && editor.document.languageId === 'json') {
+      try {
+        const text = editor.document.getText();
+        const parsed = JSON.parse(text);
+        const ndf = parser.dumps(parsed);
+        
+        const doc = await vscode.workspace.openTextDocument({
+          content: ndf,
+          language: 'notedf'
+        });
+        await vscode.window.showTextDocument(doc);
+      } catch (error: any) {
+        vscode.window.showErrorMessage(`Conversion failed: ${error.message}`);
+      }
+    } else {
+      vscode.window.showWarningMessage('Please open a JSON file to convert to NDF');
+    }
+  });
 
+  context.subscriptions.push(formatCommand, validateCommand, toJsonCommand, fromJsonCommand);
+}

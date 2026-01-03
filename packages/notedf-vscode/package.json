@@ -2,7 +2,7 @@
   "name": "notedf-vscode",
   "displayName": "Note Data Format (NDF)",
   "description": "Syntax highlighting and language support for Note Data Format (.notedf) files",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "publisher": "dysporium",
   "engines": {
     "vscode": "^1.74.0"
@@ -58,6 +58,11 @@
         "command": "notedf.toJson",
         "title": "Convert to JSON",
         "category": "NDF"
+      },
+      {
+        "command": "notedf.fromJson",
+        "title": "Convert from JSON",
+        "category": "NDF"
       }
     ],
     "configuration": {
@@ -87,7 +92,7 @@
     "release": "npm run version:patch && npm run package"
   },
   "devDependencies": {
-    "@dysporium/notedf": "file:../../notedf-ts",
+    "notedf": "file:../../notedf-ts",
     "@types/node": "^20.10.6",
     "@types/vscode": "^1.74.0",
     "typescript": "^5.3.3",

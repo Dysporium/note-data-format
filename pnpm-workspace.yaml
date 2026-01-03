@@ -1,0 +1,4 @@
+packages:
+  - 'notedf-ts'
+  - 'example/notedf-nestjs'
+  - 'packages/**'

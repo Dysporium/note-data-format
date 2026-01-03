@@ -1,38 +1,76 @@
 import * as vscode from 'vscode';
-import { NoteDataFormat } from '@dysporium/notedf';
+import { NoteDataFormat } from 'notedf';
 import { createFormatterProvider } from './providers/formatter';
 import { createHoverProvider } from './providers/hover';
 import { createSymbolProvider } from './providers/symbols';
+import { createCompletionProvider } from './providers/completion';
+import { createDefinitionProvider } from './providers/definition';
+import { createRenameProvider } from './providers/rename';
+import { createFoldingRangeProvider } from './providers/folding';
 import { DiagnosticsManager } from './providers/diagnostics';
 import { registerCommands } from './commands';
+
+const LANGUAGE_ID = 'notedf';
 
 let diagnosticsManager: DiagnosticsManager;
 
 export function activate(context: vscode.ExtensionContext) {
-  
   const parser = new NoteDataFormat();
   
   diagnosticsManager = new DiagnosticsManager(parser);
   context.subscriptions.push(diagnosticsManager.collection);
 
   const formatter = vscode.languages.registerDocumentFormattingEditProvider(
-    'notedf',
+    LANGUAGE_ID,
     createFormatterProvider(parser)
   );
 
   const hoverProvider = vscode.languages.registerHoverProvider(
-    'notedf',
+    LANGUAGE_ID,
     createHoverProvider(parser)
   );
 
   const symbolProvider = vscode.languages.registerDocumentSymbolProvider(
-    'notedf',
+    LANGUAGE_ID,
     createSymbolProvider(parser)
   );
 
+  const completionProvider = vscode.languages.registerCompletionItemProvider(
+    LANGUAGE_ID,
+    createCompletionProvider(parser),
+    '$', ':', ' '
+  );
+
+  const definitionProvider = vscode.languages.registerDefinitionProvider(
+    LANGUAGE_ID,
+    createDefinitionProvider()
+  );
+
+  const renameProvider = vscode.languages.registerRenameProvider(
+    LANGUAGE_ID,
+    createRenameProvider()
+  );
+
+  const foldingProvider = vscode.languages.registerFoldingRangeProvider(
+    LANGUAGE_ID,
+    createFoldingRangeProvider()
+  );
+
   const changeListener = vscode.workspace.onDidChangeTextDocument((e) => {
-    if (e.document.languageId === 'notedf') {
+    if (e.document.languageId === LANGUAGE_ID) {
       diagnosticsManager.validate(e.document);
+    }
+  });
+
+  const openListener = vscode.workspace.onDidOpenTextDocument((document) => {
+    if (document.languageId === LANGUAGE_ID) {
+      diagnosticsManager.validate(document);
+    }
+  });
+
+  const closeListener = vscode.workspace.onDidCloseTextDocument((document) => {
+    if (document.languageId === LANGUAGE_ID) {
+      diagnosticsManager.clear(document.uri);
     }
   });
 
@@ -44,7 +82,13 @@ export function activate(context: vscode.ExtensionContext) {
     formatter,
     hoverProvider,
     symbolProvider,
-    changeListener
+    completionProvider,
+    definitionProvider,
+    renameProvider,
+    foldingProvider,
+    changeListener,
+    openListener,
+    closeListener
   );
 }
 
