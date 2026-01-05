@@ -1,4 +1,4 @@
-# NDF - Note Data Format
+# Note Data Format
 
 Write data like notes, parse like lightning. A simple, compact, model-optimized data format.
 
@@ -12,37 +12,19 @@ Write data like notes, parse like lightning. A simple, compact, model-optimized 
 
 ## Installation
 
-### Python
 ```bash
-pip install notedf
-```
+# Install from GitHub
+npm install github:Dysporium/note-data-format
 
-### TypeScript/JavaScript
-```bash
-npm install @dysporium/notedf
+# Or clone and link locally
+git clone https://github.com/Dysporium/note-data-format.git
+cd note-data-format/notedf-ts
+npm install && npm run build
+npm link
 ```
 
 ## Quick Start
 
-### Python
-```python
-from notedf import NoteDataFormat
-
-parser = NoteDataFormat()
-
-# Parse NDF
-data = parser.parse("""
-user:
-  name: Alice
-  age: 30
-  tags: python ai ml
-""")
-
-# Serialize to NDF
-ndf_text = parser.dumps(data)
-```
-
-### TypeScript
 ```typescript
 import { NoteDataFormat } from '@dysporium/notedf';
 
@@ -96,9 +78,12 @@ It preserves line breaks.
 
 ## Documentation
 
-Full documentation available at [GitHub](https://github.com/Dysporium/note-data-format)
+- **[Formal Grammar](https://github.com/Dysporium/note-data-format/wiki/NDF-Formal-Grammar-Specification)** - Complete EBNF grammar specification
+- **[Canonicalization Rules](https://github.com/Dysporium/note-data-format/wiki/NDF-Canonicalization-Rules)** - Rules for deterministic serialization
+- **[Escaping & Edge Cases](https://github.com/Dysporium/note-data-format/wiki/NDF-Escaping-and-Edge-Cases)** - How to handle special characters and edge cases
+
+Full documentation available in the [GitHub Wiki](https://github.com/Dysporium/note-data-format/wiki)
 
 ## License
 
 MIT License - see LICENSE file for details.
-

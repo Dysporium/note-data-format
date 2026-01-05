@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { NoteDataFormat } from 'notedf';
+import { NoteDataFormat } from '@dysporium/notedf';
 import { debounce } from '../utils/debounce';
 
 export class DiagnosticsManager {

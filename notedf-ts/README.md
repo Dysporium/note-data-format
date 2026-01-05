@@ -1,10 +1,18 @@
 # @dysporium/notedf
 
 TypeScript/JavaScript implementation of Note Data Format (NDF) - a simple, compact, model-optimized data format.
+
 ## Installation
 
 ```bash
-npm install @dysporium/notedf
+# Install from GitHub
+npm install github:Dysporium/note-data-format
+
+# Or clone and link locally
+git clone https://github.com/Dysporium/note-data-format.git
+cd note-data-format/notedf-ts
+npm install && npm run build
+npm link
 ```
 
 ## Quick Start
@@ -44,15 +52,11 @@ console.log(data); // { name: 'John', age: 30 }
 // Async file operations
 const data = await parser.loadFile('config.notedf');
 await parser.saveFile(data, 'output.notedf');
-
-// Sync file operations
-const data = parser.loadFileSync('config.notedf');
-parser.saveFileSync(data, 'output.notedf');
 ```
 
 ### CLI Tool
 
-After installation, use the `ndf` command:
+After installation and linking, use the `ndf` command:
 
 ```bash
 # Convert .notedf to JSON
@@ -66,9 +70,6 @@ ndf validate settings.notedf
 
 # Format/pretty-print
 ndf format config.notedf
-
-# Display as JSON
-ndf cat config.notedf
 ```
 
 ## Syntax Examples
@@ -116,11 +117,14 @@ Main parser class.
 #### Methods
 
 - `parse(text: string): NDFObject` - Parse NDF text into JavaScript object
-- `dumps(data: NDFObject, indent?: number): string` - Convert object to NDF format
+- `dumps(data: NDFObject, options?: DumpOptions): string` - Convert object to NDF format
 - `loadFile(filepath: string): Promise<NDFObject>` - Load and parse NDF file (async)
-- `loadFileSync(filepath: string): NDFObject` - Load and parse NDF file (sync)
 - `saveFile(data: NDFObject, filepath: string): Promise<void>` - Save object to NDF file (async)
-- `saveFileSync(data: NDFObject, filepath: string): void` - Save object to NDF file (sync)
+- `validate(text: string): ValidationResult` - Validate NDF syntax
+- `get(data: NDFObject, path: string): NDFValue` - Get value by dot-notation path
+- `set(data: NDFObject, path: string, value: NDFValue): NDFObject` - Set value by path
+- `merge(target: NDFObject, source: NDFObject): NDFObject` - Deep merge objects
+- `diff(oldData: NDFObject, newData: NDFObject): DiffResult` - Compare two objects
 
 ### Types
 
@@ -151,4 +155,3 @@ Full documentation available at [GitHub](https://github.com/Dysporium/note-data-
 ## License
 
 MIT License - see LICENSE file for details.
-

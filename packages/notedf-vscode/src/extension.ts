@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { NoteDataFormat } from 'notedf';
+import { NoteDataFormat } from '@dysporium/notedf';
 import { createFormatterProvider } from './providers/formatter';
 import { createHoverProvider } from './providers/hover';
 import { createSymbolProvider } from './providers/symbols';

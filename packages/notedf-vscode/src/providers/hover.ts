@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { NoteDataFormat } from 'notedf';
+import { NoteDataFormat } from '@dysporium/notedf';
 import { findReferenceDefinition } from './definition';
 
 export function createHoverProvider(parser: NoteDataFormat): vscode.HoverProvider {

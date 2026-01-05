@@ -4,7 +4,7 @@ Syntax highlighting and language support for Note Data Format (`.notedf`) files 
 
 ## Features
 
-- Syntax highlighting for `.notedf` and `.ndf` files
+- Syntax highlighting for `.notedf` files
 - Color-coded syntax for keys, values, comments, references, arrays, and objects
 - Comment support (lines starting with `#`)
 - Auto-closing brackets and quotes
@@ -35,7 +35,7 @@ Syntax highlighting and language support for Note Data Format (`.notedf`) files 
 
 ## Usage
 
-Open any `.notedf` or `.ndf` file. Syntax highlighting should work automatically. If it doesn't, check that the file extension is correct and the extension is enabled.
+Open any `.notedf` file. Syntax highlighting should work automatically. If it doesn't, check that the file extension is correct and the extension is enabled.
 
 ### Commands
 
