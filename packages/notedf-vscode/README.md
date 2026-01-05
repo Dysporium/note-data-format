@@ -1,4 +1,4 @@
-# Note Data Format (NDF) - VS Code Extension
+# Note Data Format - VS Code Extension
 
 Syntax highlighting and language support for Note Data Format (`.notedf`) files in VS Code.
 
@@ -9,7 +9,7 @@ Syntax highlighting and language support for Note Data Format (`.notedf`) files 
 - Comment support (lines starting with `#`)
 - Auto-closing brackets and quotes
 - Smart indentation rules
-- **Document formatting** - Format NDF files with proper indentation
+- **Document formatting** - Format files with proper indentation
 - **Validation** - Real-time syntax error detection with diagnostics
 - **Hover information** - Hover over keys to see their values
 - **Document symbols** - Outline view showing all keys in the file
@@ -39,11 +39,11 @@ Open any `.notedf` file. Syntax highlighting should work automatically. If it do
 
 ### Commands
 
-- **Format Document** (`notedf.format`) - Format the current NDF file
-- **Validate NDF** (`notedf.validate`) - Check for syntax errors
-- **Convert to JSON** (`notedf.toJson`) - Convert NDF to JSON in a new editor
+- **Format Document** (`notedf.format`) - Format the current file
+- **Validate** (`notedf.validate`) - Check for syntax errors
+- **Convert to JSON** (`notedf.toJson`) - Convert to JSON in a new editor
 
-Access commands via Command Palette (Ctrl+Shift+P / Cmd+Shift+P) and search for "NDF".
+Access commands via Command Palette (Ctrl+Shift+P / Cmd+Shift+P) and search for "notedf".
 
 ### Configuration
 
@@ -86,8 +86,7 @@ npm run version:major    # Bump major version (1.0.0 → 2.0.0)
 
 ## Related
 
-- [TypeScript Package](../notedf-ts) - Core NDF parser library
-- [Python Package](../notedf-py) - Python implementation
+- [TypeScript Package](../notedf-ts) - Core parser library
 - [Main Repository](https://github.com/Dysporium/note-data-format)
 
 ## License

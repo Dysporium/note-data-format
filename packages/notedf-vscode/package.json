@@ -2,7 +2,7 @@
   "name": "notedf-vscode",
   "displayName": "Note Data Format (NDF)",
   "description": "Syntax highlighting and language support for Note Data Format (.notedf) files",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "publisher": "dysporium",
   "engines": {
     "vscode": "^1.74.0"
